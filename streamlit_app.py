@@ -8,6 +8,12 @@ st.title('Permaswap Stats Info')
 
 stats_host = 'https://stats.permaswap.network'
 router_host = 'https://router.permaswap.network'
+decimals = {
+    'ar': 12,
+    'usdc': 6,
+    'usdt':6,
+    'eth':18
+}
 pools = {
     'usdc-usdt': '0xdb7b3480f2d1f7bbe91ee3610664756b91bbe0744bc319db2f0b89efdf552064',
     'ar-usdc': '0x0750e26dbffb85e66891b71b9e1049c4be6d94dab938bbb06573ca6178615981',
@@ -53,6 +59,21 @@ lps = get_lps()
 print('lps:', lps)
 
 # tvl
+tvl = {}
+for pair, lps in lps.items():
+    x, y = pair.split('-')
+    tvl[pair] = {}
+    tvl[pair]['lp_count'] = len(lps)
+    dx = decimals[x]
+    dy = decimals[y]
+    for lp in lps:
+        ax, ay = uni.liquidity_to_amount2(lp['liquidity'], lp['lowSqrtPrice'], lp['highSqrtPrice'], lp['currentSqrtPrice'])
+        ax, ay = int(ax)/10**dx, int(ay)/10**dy
+        print(ax, ay)
+        tvl[pair][x] = tvl[pair].get(x, 0) + ax
+        tvl[pair][y] = tvl[pair].get(y, 0) + ay
+
+print('tvl:', tvl)
 # user volume
 st.subheader('User volume')
 
@@ -98,6 +119,12 @@ pool = st.selectbox(
     '',
     pools.keys())
 
+# tvl
+st.subheader('Pool %s TVL'%pool.upper())
+st.text('Lp count: %i'%tvl[pool]['lp_count'])
+x, y = pool.split('-')
+st.text('%s: %s'%(x, tvl[pool][x]))
+st.text('%s: %s'%(y, tvl[pool][y]))
 
 date = []
 vs = []
