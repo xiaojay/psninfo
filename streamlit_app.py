@@ -115,16 +115,22 @@ c = alt.Chart(df).mark_line().encode(
 st.altair_chart(c)    
 
 # pool
+st.header('PooL')
 pool = st.selectbox(
     '',
     pools.keys())
 
 # tvl
 st.subheader('Current Pool %s TVL'%pool.upper())
-st.text('Lp count: %i'%tvl[pool]['lp_count'])
+#st.text('Lp count: %i'%tvl[pool]['lp_count'])
 x, y = pool.split('-')
-st.text('%s: %s'%(x, tvl[pool][x]))
-st.text('%s: %s'%(y, tvl[pool][y]))
+#st.text('%s: %s'%(x, tvl[pool][x]))
+#st.text('%s: %s'%(y, tvl[pool][y]))
+
+col1, col2, col3 = st.columns(3)
+col1.metric("LP count", tvl[pool]['lp_count'])
+col2.metric('Token X', '%i %s'%(tvl[pool][x], x))
+col3.metric('Token Y', '%i %s'%(tvl[pool][y], y))
 
 date = []
 vs = []
