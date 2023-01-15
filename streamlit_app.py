@@ -115,8 +115,14 @@ c = alt.Chart(df).mark_line().encode(
 st.altair_chart(c)    
 
 # pool
-st.header('PooL')
-pool = st.selectbox(
+#st.header('PooL')
+#pool = st.selectbox(
+#    '',
+#    pools.keys())
+
+col1, col2 = st.columns(2)
+col1.header('PooL')
+pool = col2.selectbox(
     '',
     pools.keys())
 
