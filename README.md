@@ -1,0 +1,2 @@
+# psninfo
+info of psn
