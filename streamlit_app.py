@@ -75,7 +75,7 @@ for pair, lps in lps.items():
 
 print('tvl:', tvl)
 # user volume
-st.subheader('User volume')
+st.subheader('Everyday User Volume')
 
 date = []
 router_fees = []
@@ -107,7 +107,7 @@ line =  base.mark_line(color='red').encode(
 st.altair_chart(bar)    
 
 # user count
-st.subheader('User Count')
+st.subheader('Everyday User Count')
 
 c = alt.Chart(df).mark_line().encode(
   x='date',
@@ -120,7 +120,7 @@ pool = st.selectbox(
     pools.keys())
 
 # tvl
-st.subheader('Pool %s TVL'%pool.upper())
+st.subheader('Current Pool %s TVL'%pool.upper())
 st.text('Lp count: %i'%tvl[pool]['lp_count'])
 x, y = pool.split('-')
 st.text('%s: %s'%(x, tvl[pool][x]))
