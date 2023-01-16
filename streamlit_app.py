@@ -2,7 +2,7 @@ import requests, datetime
 import streamlit as st
 import pandas as pd
 import altair as alt
-import univ3 as uni
+import utils
 
 st.title('Permaswap Stats Info')
 
@@ -67,7 +67,7 @@ for pair, lps in lps.items():
     dx = decimals[x]
     dy = decimals[y]
     for lp in lps:
-        ax, ay = uni.liquidity_to_amount2(lp['liquidity'], lp['lowSqrtPrice'], lp['highSqrtPrice'], lp['currentSqrtPrice'])
+        ax, ay = utils.liquidity_to_amount2(lp['liquidity'], lp['lowSqrtPrice'], lp['highSqrtPrice'], lp['currentSqrtPrice'])
         ax, ay = int(ax)/10**dx, int(ay)/10**dy
         print(ax, ay)
         tvl[pair][x] = tvl[pair].get(x, 0) + ax
@@ -134,9 +134,9 @@ x, y = pool.split('-')
 #st.text('%s: %s'%(y, tvl[pool][y]))
 
 col1, col2, col3 = st.columns(3)
-col1.metric("LP count", tvl[pool]['lp_count'])
-col2.metric('Token X', '%i %s'%(tvl[pool][x], x))
-col3.metric('Token Y', '%i %s'%(tvl[pool][y], y))
+col1.metric(":green[LP count]", tvl[pool]['lp_count'])
+col2.metric(':green[Token X]', '%.2f %s'%(tvl[pool][x], x))
+col3.metric(':green[Token Y]', '%.2f %s'%(tvl[pool][y], y))
 
 date = []
 vs = []
@@ -148,7 +148,7 @@ for s in stats:
     fee_ratio = fee_ratios[pool]
     fees.append(v*fee_ratio)
 
-st.subheader('Pool %s Volume'%pool.upper())
+st.subheader('Volume')
 
 df = pd.DataFrame({'date': date,
                    'volumes': vs,
@@ -160,7 +160,7 @@ c = alt.Chart(df).mark_bar(color='green').encode(
 
 st.altair_chart(c)    
 
-st.subheader('Pool %s Fees'%pool.upper())
+st.subheader('Fees')
 
 c = alt.Chart(df).mark_bar(color='green').encode(
   x='date',
