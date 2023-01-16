@@ -28,6 +28,17 @@ fee_ratios = {
     'eth-usdc': 0.003
 }
 
+@st.cache(ttl=300)
+def get_prices():
+    prices = {
+        'usdc': 1,
+        'usdt':1,
+    }
+    prices['ar'] = utils.get_price_from_redstone('ar', 'usdc')
+    prices['eth'] = utils.get_price_from_redstone('eth', 'usdc')
+    return prices
+prices = get_prices()
+
 @st.cache
 def get_stats(start):
     stats = []
