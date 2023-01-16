@@ -29,10 +29,9 @@ fee_ratios = {
 }
 
 @st.cache
-def get_stats():
+def get_stats(start):
     stats = []
-    today = datetime.date.today()
-    day = today
+    day = start
     for i in range(1, 31):
         day = day - datetime.timedelta(days=1)
         date = day.strftime('%Y-%m-%d')
@@ -45,7 +44,9 @@ def get_stats():
         print(date)
     stats.reverse()
     return stats
-stats = get_stats()
+
+today = datetime.date.today()
+stats = get_stats(today)
 
 @st.cache
 def get_lps():
