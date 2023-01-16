@@ -3,7 +3,6 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import utils
-
 st.title('Permaswap Stats Info')
 
 stats_host = 'https://stats.permaswap.network'
@@ -38,6 +37,16 @@ def get_prices():
     prices['eth'] = utils.get_price_from_redstone('eth', 'usdc')
     return prices
 prices = get_prices()
+print('prices', prices)
+
+@st.cache(ttl=300)
+def get_info():
+    url = '%s/info'%stats_host
+    return requests.get(url).json()
+info = get_info()
+pool_count = len(info['pool'])
+print(info['curStats']['user'].values())
+today_volume = sum(info['curStats']['user'].values())
 
 @st.cache
 def get_stats(start):
@@ -59,7 +68,7 @@ def get_stats(start):
 today = datetime.date.today()
 stats = get_stats(today)
 
-@st.cache
+@st.cache(ttl=300)
 def get_lps():
     lps = {}
     for k, v in pools.items():
@@ -68,10 +77,12 @@ def get_lps():
         lps[k] = data['lps']
     return lps
 lps = get_lps()
+lp_count = sum([len(v) for k, v in lps.items()])
 print('lps:', lps)
 
 # tvl
 tvl = {}
+total_tvl = 0
 for pair, lps in lps.items():
     x, y = pair.split('-')
     tvl[pair] = {}
@@ -84,8 +95,19 @@ for pair, lps in lps.items():
         print(ax, ay)
         tvl[pair][x] = tvl[pair].get(x, 0) + ax
         tvl[pair][y] = tvl[pair].get(y, 0) + ay
-
+        total_tvl += prices[x] * ax 
+        total_tvl += prices[y] * ay
+print('total_tvl:', total_tvl)
 print('tvl:', tvl)
+
+col1, col2 = st.columns(2)
+col1.metric(':green[Today Volume]', '%i usd'%today_volume)
+col2.metric(":green[Total TVL]", '%i usd'%total_tvl)
+
+col1, col2 = st.columns(2)
+col1.metric(':green[Current Pool Count]', pool_count)
+col2.metric(':green[Current LP Count]', lp_count)
+
 # user volume
 st.subheader('Everyday User Volume')
 
@@ -110,10 +132,10 @@ df = pd.DataFrame({'date': date,
 
 base = alt.Chart(df).encode(x='date')
 
-bar = base.mark_bar().encode(
+bar = base.mark_bar(color='green').encode(
   y='user_volumes')
 
-line =  base.mark_line(color='red').encode(
+line =  base.mark_line(color='green').encode(
     y='user_counts'
 )
 st.altair_chart(bar)    
@@ -121,7 +143,7 @@ st.altair_chart(bar)
 # user count
 st.subheader('Everyday User Count')
 
-c = alt.Chart(df).mark_line().encode(
+c = alt.Chart(df).mark_line(color='green').encode(
   x='date',
   y='user_counts')
 st.altair_chart(c)    
