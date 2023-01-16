@@ -45,7 +45,6 @@ def get_info():
     return requests.get(url).json()
 info = get_info()
 pool_count = len(info['pool'])
-print(info['curStats']['user'].values())
 today_volume = sum(info['curStats']['user'].values())
 
 @st.cache
@@ -101,8 +100,8 @@ print('total_tvl:', total_tvl)
 print('tvl:', tvl)
 
 col1, col2 = st.columns(2)
-col1.metric(':green[Today Volume]', '%i usd'%today_volume)
-col2.metric(":green[Total TVL]", '%i usd'%total_tvl)
+col1.metric(':green[Today (%s) Volume]'%today.strftime('%Y-%m-%d'), '%.2f $'%today_volume)
+col2.metric(":green[Current Total TVL]", '%.2f $'%total_tvl)
 
 col1, col2 = st.columns(2)
 col1.metric(':green[Current Pool Count]', pool_count)
@@ -168,9 +167,9 @@ x, y = pool.split('-')
 #st.text('%s: %s'%(y, tvl[pool][y]))
 
 col1, col2, col3 = st.columns(3)
-col1.metric(":green[LP count]", tvl[pool]['lp_count'])
-col2.metric(':green[Token X]', '%.2f %s'%(tvl[pool][x], x))
-col3.metric(':green[Token Y]', '%.2f %s'%(tvl[pool][y], y))
+col1.metric(':green[Token X]', '%.2f %s'%(tvl[pool][x], x.upper()))
+col2.metric(':green[Token Y]', '%.2f %s'%(tvl[pool][y], y.upper()))
+col3.metric(":green[LP count]", tvl[pool]['lp_count'])
 
 date = []
 vs = []
