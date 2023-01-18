@@ -56,6 +56,8 @@ def get_stats(start):
         date = day.strftime('%Y-%m-%d')
         url = '%s/stats?date=%s'%(stats_host, date)
         data = requests.get(url).json()
+        if str(data) == 'record not found':
+            continue
         stats.append({
             'date': date,
             'stats':data
