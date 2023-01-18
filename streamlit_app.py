@@ -108,7 +108,7 @@ print('total_tvl:', total_tvl)
 print('tvl:', tvl)
 
 col1, col2 = st.columns(2)
-col1.metric(':green[Today (%s) Volume]'%today.strftime('%Y-%m-%d'), '%.2f $'%today_volume)
+col1.metric(':green[Today (%s UTC) Volume]'%today.strftime('%Y-%m-%d'), '%.2f $'%today_volume)
 col2.metric(":green[Current Total TVL]", '%.2f $'%total_tvl)
 
 col1, col2 = st.columns(2)
