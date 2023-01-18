@@ -1,4 +1,5 @@
 import requests, datetime
+from dateutil import parser
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -45,7 +46,12 @@ def get_info():
     return requests.get(url).json()
 info = get_info()
 pool_count = len(info['pool'])
-today_volume = sum(info['curStats']['user'].values())
+
+cur = parser.parse(info['curStats']['date'])
+if datetime.datetime.now(datetime.timezone.utc).date() == cur.date():
+    today_volume = sum(info['curStats']['user'].values())
+else:
+    today_volume = 0
 
 @st.cache
 def get_stats(start):
