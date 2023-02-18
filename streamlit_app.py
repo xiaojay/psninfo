@@ -58,7 +58,7 @@ else:
 def get_stats(start):
     stats = []
     day = start
-    for i in range(1, 61):
+    for i in range(1, 31):
         day = day - datetime.timedelta(days=1)
         date = day.strftime('%Y-%m-%d')
         url = '%s/stats?date=%s'%(stats_host, date)
