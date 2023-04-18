@@ -58,8 +58,8 @@ def get_info():
     url = '%s/info'%stats_host
     return requests.get(url).json()
 info = get_info()
-#pool_count = len(info['pool'])
-pool_count = 4
+pool_count = len(info['pool'])
+#pool_count = 4
 
 cur = parser.parse(info['curStats']['date'])
 if datetime.datetime.now(datetime.timezone.utc).date() == cur.date():
