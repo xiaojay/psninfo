@@ -68,21 +68,11 @@ else:
     today_volume = 0
 
 @st.cache
-def get_stats(start):
+def get_stats(end):
     stats = []
-    day = start
-    for i in range(1, 31):
-        day = day - datetime.timedelta(days=1)
-        date = day.strftime('%Y-%m-%d')
-        url = '%s/stats?date=%s'%(stats_host, date)
-        data = requests.get(url).json()
-        if str(data) == 'record not found':
-            continue
-        stats.append({
-            'date': date,
-            'stats':data
-        })
-        print(date)
+    start = end - datetime.timedelta(days=30)
+    url = '%s/stats?start=%s&end=%s'%(stats_host, start.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d'))
+    stats = requests.get(url).json()
     stats.reverse()
     return stats
 
