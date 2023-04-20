@@ -67,12 +67,22 @@ if datetime.datetime.now(datetime.timezone.utc).date() == cur.date():
 else:
     today_volume = 0
 
+def get_date(datetime_str):
+    date_obj = datetime.datetime.fromisoformat(datetime_str.replace("Z", "+00:00"))
+    return date_obj.date().isoformat()
+
 @st.cache
 def get_stats(end):
     stats = []
     start = end - datetime.timedelta(days=30)
     url = '%s/stats?start=%s&end=%s'%(stats_host, start.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d'))
-    stats = requests.get(url).json()
+    data = requests.get(url).json()
+    for d in data:
+        date = get_date(d['date'])
+        stats.append({
+            'date': date,
+            'stats': data
+        })
     stats.reverse()
     return stats
 
