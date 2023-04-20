@@ -81,7 +81,7 @@ def get_stats(end):
         date = get_date(d['date'])
         stats.append({
             'date': date,
-            'stats': data
+            'stats': d
         })
     stats.reverse()
     return stats
