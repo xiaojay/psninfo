@@ -49,6 +49,7 @@ def get_prices():
         #todo 
         'ardrive': 0.4,
         'acnh': 0.147,
+        'ans': 1.5
     }
     prices['ar'] = utils.get_price_from_redstone('ar', 'usdc')
     prices['eth'] = utils.get_price_from_redstone('eth', 'usdc')
