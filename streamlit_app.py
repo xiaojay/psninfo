@@ -14,7 +14,8 @@ decimals = {
     'usdt':6,
     'eth':18,
     'ardrive':18,
-    'acnh':8
+    'acnh':8,
+    'ans': 18
 }
 pools = {
     'usdc-usdt': '0xdb7b3480f2d1f7bbe91ee3610664756b91bbe0744bc319db2f0b89efdf552064',
@@ -24,7 +25,8 @@ pools = {
     #'ar-usdt': '0x13f0377029205a60b0e02aef985cbf91d854282c2d8064c810667ee3ebcde39f',
     #'eth-usdt':'0x9d9c7e102d741ec921c41567c34e751f021cd37df42befe702d84a6475fae90c',
     'ar-ardrive': '0xbb546a762e7d5f24549cfd97dfa394404790293277658e42732ab3b2c4345fa3',
-    'usdc-acnh': '0x7200199c193c97012893fd103c56307e44434322439ece7711f28a8c3512c082'
+    'usdc-acnh': '0x7200199c193c97012893fd103c56307e44434322439ece7711f28a8c3512c082',
+    'ar-ans': '0x6e80137a5bbb6ae6b683fcd8a20978d6b4632dddc78aa61945adbcc5a197ca0f'
 }
 
 fee_ratios = {
@@ -36,6 +38,7 @@ fee_ratios = {
     'eth-usdt': 0.003,
     'ar-ardrive': 0.003,
     'usdc-acnh':0.0005,
+    'ar-ans': 0.003
 }
 
 @st.cache(ttl=300)
