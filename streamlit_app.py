@@ -158,19 +158,18 @@ df = pd.DataFrame({'date': date,
 base = alt.Chart(df).encode(x='date')
 
 bar = base.mark_bar(color='green').encode(
-  y='user_volumes')
+    y=alt.Y('user_volumes', title='Trading Volume (usd)')) 
 
-line =  base.mark_line(color='green').encode(
-    y='user_counts'
-)
+# line =  base.mark_line(color='green').encode(
+#     y=alt.Y('user_counts', title='User Count'))
 st.altair_chart(bar)    
 
 # user count
 st.subheader('Everyday User Count')
 
 c = alt.Chart(df).mark_line(color='green').encode(
-  x='date',
-  y='user_counts')
+    x='date',
+    y=alt.Y('user_counts', title='User Count'))
 st.altair_chart(c)    
 
 # pool
@@ -215,7 +214,7 @@ df = pd.DataFrame({'date': date,
 
 c = alt.Chart(df).mark_bar(color='green').encode(
   x='date',
-  y='volumes')
+  y=alt.Y('volumes', title='Trading Volume (usd)'))
 
 st.altair_chart(c)    
 
@@ -223,7 +222,7 @@ st.subheader('Fees')
 
 c = alt.Chart(df).mark_bar(color='green').encode(
   x='date',
-  y='fees')
+  y=alt.Y('fees', title='Fee (usd)'))
 
 st.altair_chart(c)    
 
