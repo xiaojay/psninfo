@@ -158,7 +158,7 @@ df = pd.DataFrame({'date': date,
 base = alt.Chart(df).encode(x='date')
 
 bar = base.mark_bar(color='green').encode(
-  y='user_volumes')
+  y='user_volumes (usd)')
 
 line =  base.mark_line(color='green').encode(
     y='user_counts'
@@ -215,7 +215,7 @@ df = pd.DataFrame({'date': date,
 
 c = alt.Chart(df).mark_bar(color='green').encode(
   x='date',
-  y='volumes')
+  y='volumes (usd)')
 
 st.altair_chart(c)    
 
@@ -223,7 +223,7 @@ st.subheader('Fees')
 
 c = alt.Chart(df).mark_bar(color='green').encode(
   x='date',
-  y='fees')
+  y='fees (usd)')
 
 st.altair_chart(c)    
 
