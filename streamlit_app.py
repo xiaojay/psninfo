@@ -41,7 +41,7 @@ fee_ratios = {
     'ar-ans': 0.003
 }
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=600)
 def get_prices():
     prices = {
         'usdc': 1,
