@@ -5,6 +5,18 @@ import utils
 stats_host = 'https://stats.permaswap.network'
 router_host = 'https://router.permaswap.network'
 
+symbol_to_tag = {
+    'ar': 'arweave,ethereum-ar-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543',
+    'usdc': 'ethereum-usdc-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    'usdt': 'ethereum-usdt-0xdac17f958d2ee523a2206206994597c13d831ec7',
+    'eth': 'ethereum-eth-0x0000000000000000000000000000000000000000',
+    'ardrive': 'arweave-ardrive--8A6RexFkpfWwuyVO98wzSFZh0d6VJuI-buTJvlwOJQ',
+    'acnh': 'everpay-acnh-0x72247989079da354c9f0a6886b965bcc86550f8a',
+    'ans': 'ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62',
+}
+
+tag_to_symbol = {value: key for key, value in symbol_to_tag.items()}
+
 decimals = {
     'ar': 12,
     'usdc': 6,
@@ -14,6 +26,7 @@ decimals = {
     'acnh':8,
     'ans': 18
 }
+
 pools = {
     #'ar-usdt': '0x13f0377029205a60b0e02aef985cbf91d854282c2d8064c810667ee3ebcde39f',
     #'eth-usdt':'0x9d9c7e102d741ec921c41567c34e751f021cd37df42befe702d84a6475fae90c',
@@ -27,12 +40,12 @@ pools = {
 }
 
 fee_ratios = {
+    #'ar-usdt': 0.003,
+    #'eth-usdt': 0.003,
     'usdc-usdt': 0.0005,
     'ar-usdc': 0.003,
     'ar-eth': 0.003,
     'eth-usdc': 0.003,
-    'ar-usdt': 0.003,
-    'eth-usdt': 0.003,
     'ar-ardrive': 0.003,
     'usdc-acnh':0.0005,
     'ar-ans': 0.003
@@ -101,6 +114,88 @@ def get_orders(end, start='', duration=30):
 
 @st.cache_data(ttl=300)
 def get_today_orders():
-    orders = []
     start = datetime.datetime.today()
     return get_orders(start, start)
+
+def get_volume(order, order_ref):
+    token_in = tag_to_symbol[order['tokenInTag']]
+    token_out = tag_to_symbol[order['tokenOutTag']]
+    amount_in = float(order['tokenInAmount'])
+    amount_out = float(order['tokenOutAmount']),
+    
+    token_in_ref = tag_to_symbol[order_ref['tokenInTag']]
+    token_out_ref = tag_to_symbol[order_ref['tokenOutTag']]
+    amount_in_ref = float(order_ref['tokenInAmount'])
+    amount_out_ref = float(order_ref['tokenOutAmount'])
+    
+    if token_in == token_in_ref and token_out_ref in ['usdc', 'usdt']:
+        price_token_in = amount_out_ref/amount_in_ref
+        volume = price_token_in * amount_in
+        return volume
+    
+    if token_out == token_in_ref and token_out_ref in ['usdc', 'usdt']:
+        price_token_out = amount_out_ref/amount_in_ref
+        volume = price_token_out * amount_out
+        return volume
+           
+                
+    if token_in == token_out_ref and token_in_ref in ['usdc', 'usdt']:
+        price_token_in = amount_in_ref/amount_out_ref
+        volume = price_token_in * amount_in
+        return volume
+       
+    if token_out == token_out_ref and token_in_ref in ['usdc', 'usdt']:
+        price_token_out = amount_in_ref/amount_out_ref
+        volume = price_token_out * amount_out
+        return volume
+    
+    return -1
+            
+def process_orders(orders):
+    new_orders = []
+    n = len(orders)
+    for index, order in enumerate(orders):
+        token_in = tag_to_symbol[order['tokenInTag']]
+        token_out = tag_to_symbol[order['tokenOutTag']]
+        amount_in = float(order['tokenInAmount'])
+        amount_out = float(order['tokenOutAmount']),
+        volume = 0
+
+        new_order = {
+            'time': order['timestamp'],
+            'address': order['address'],
+            'ever_hash': order['everHash'],
+            'token_in': token_in,
+            'token_out': token_out,
+            'amount_in': amount_in,
+            'amount_out': amount_out,
+        }
+        
+        if token_in in ['usdc', 'usdt']:
+            volume = float(order["tokenInAmount"])
+            new_order['volume'] = volume
+            new_orders.append(new_order)
+            continue
+
+        if token_out in ['usdc', 'usdt']:
+            volume = float(order["tokenOutAmount"])
+            new_order['volume'] = volume
+            new_orders.append(new_order)
+            continue
+            
+        for i in range(100):
+            if index + i < n - 1:
+                order_next = orders[index + i]
+                volume = get_volume(order, order_next)
+                if volume > 0:
+                    new_order['volume'] = volume
+                    new_orders.append(new_order)
+                    break
+                
+            if index - i > 0:
+                order_prev = orders[index + i]
+                volume = get_volume(order, order_prev)
+                if volume > 0:
+                    new_order['volume'] = volume
+                    new_orders.append(new_order)
+                    break
