@@ -84,3 +84,23 @@ def get_lps():
         data = requests.get(url).json()
         lps[k] = data['lps']
     return lps
+
+@st.cache_data
+def get_orders(end, start='', duration=30):
+    orders = []
+    if start == '':
+        start = end - datetime.timedelta(days=duration)
+    for page in range(1, 50000):
+        url = '%s/orders?start=%s&end=%s&count=50&page=%i'%(router_host, start.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d'), page)
+        print(url)
+        data = requests.get(url).json()
+        orders.extend(data['orders'])
+        if len(data['orders']) < 50:
+            break
+    return orders
+
+@st.cache_data(ttl=300)
+def get_today_orders():
+    orders = []
+    start = datetime.datetime.today()
+    return get_orders(start, start)
