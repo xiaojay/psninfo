@@ -121,7 +121,7 @@ def get_volume(order, order_ref):
     token_in = tag_to_symbol[order['tokenInTag']]
     token_out = tag_to_symbol[order['tokenOutTag']]
     amount_in = float(order['tokenInAmount'])
-    amount_out = float(order['tokenOutAmount']),
+    amount_out = float(order['tokenOutAmount'])
     
     token_in_ref = tag_to_symbol[order_ref['tokenInTag']]
     token_out_ref = tag_to_symbol[order_ref['tokenOutTag']]
@@ -154,11 +154,12 @@ def get_volume(order, order_ref):
 def process_orders(orders):
     new_orders = []
     n = len(orders)
+    
     for index, order in enumerate(orders):
         token_in = tag_to_symbol[order['tokenInTag']]
         token_out = tag_to_symbol[order['tokenOutTag']]
         amount_in = float(order['tokenInAmount'])
-        amount_out = float(order['tokenOutAmount']),
+        amount_out = float(order['tokenOutAmount'])
         volume = 0
 
         new_order = {
@@ -193,9 +194,11 @@ def process_orders(orders):
                     break
                 
             if index - i > 0:
-                order_prev = orders[index + i]
+                order_prev = orders[index - i]
                 volume = get_volume(order, order_prev)
                 if volume > 0:
                     new_order['volume'] = volume
                     new_orders.append(new_order)
                     break
+    
+    return new_orders
