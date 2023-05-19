@@ -111,7 +111,7 @@ def get_orders(end, start='', duration=30):
         print(url)
         data = requests.get(url).json()
         orders.extend(data['orders'])
-        if len(data['orders']) < 50:
+        if len(data['orders']) < 200:
             break
     return orders
 
