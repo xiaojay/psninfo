@@ -1,9 +1,12 @@
 import requests, datetime
+import pandas as pd
 import streamlit as st
 import utils
 
 stats_host = 'https://stats.permaswap.network'
 router_host = 'https://router.permaswap.network'
+
+tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans']
 
 symbol_to_tag = {
     'ar': 'arweave,ethereum-ar-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543',
@@ -89,7 +92,7 @@ def get_stats(end):
     stats.reverse()
     return stats
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=1200)
 def get_lps():
     lps = {}
     for k, v in pools.items():
@@ -104,7 +107,7 @@ def get_orders(end, start='', duration=30):
     if start == '':
         start = end - datetime.timedelta(days=duration)
     for page in range(1, 50000):
-        url = '%s/orders?start=%s&end=%s&count=50&page=%i'%(router_host, start.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d'), page)
+        url = '%s/orders?start=%s&end=%s&count=200&page=%i'%(router_host, start.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d'), page)
         print(url)
         data = requests.get(url).json()
         orders.extend(data['orders'])
@@ -202,3 +205,28 @@ def process_orders(orders):
                     break
     
     return new_orders
+
+def get_kline(orders, token, period):
+    df = pd.DataFrame(orders)
+    print(df.head())
+    df.set_index('time', inplace=True)
+    df.index = pd.to_datetime(df.index, unit='ms')
+    df1 = df[(df['token_in']==token)]
+    df1['price'] = df1['volume']/df1['amount_in']
+    df2 = df[(df['token_out']==token)]
+    df2['price'] = df2['volume']/df2['amount_out']
+    df3 = pd.concat([df1,df2])
+    df4 = df3.resample(rule=period).agg(
+        {'price': ['first', 'max', 'min', 'last'],     
+        'volume': 'sum'
+    })
+    #df4.reset_index(inplace=True)
+  
+    prev = df4['price']['last'].shift(1)
+    df4['price']['last'].fillna(prev, inplace=True)
+    df4['price']['min'].fillna(prev, inplace=True)
+    df4['price']['max'].fillna(prev, inplace=True)
+    df4['price']['first'].fillna(prev, inplace=True)
+    df4.fillna(method='ffill', inplace=True)
+    
+    return df4

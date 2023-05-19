@@ -1,10 +1,12 @@
-import requests, datetime
+import datetime
 from dateutil import parser
 import streamlit as st
 import pandas as pd
 import altair as alt
 import utils
 from data import *
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
 
 st.title('Permaswap Stats Info')
 
@@ -20,6 +22,7 @@ else:
     today_volume = 0
 
 today = datetime.date.today()
+yesterday = today - datetime.timedelta(days=1)
 stats = get_stats(today)
 
 lps = get_lps()
@@ -139,11 +142,51 @@ c = alt.Chart(df).mark_bar(color='green').encode(
 
 st.altair_chart(c)    
 
-st.subheader('Fees')
+# st.subheader('Fees')
 
-c = alt.Chart(df).mark_bar(color='green').encode(
-  x='date',
-  y=alt.Y('fees', title='Fee (usd)'))
+# c = alt.Chart(df).mark_bar(color='green').encode(
+#   x='date',
+#   y=alt.Y('fees', title='Fee (usd)'))
 
-st.altair_chart(c)    
+# st.altair_chart(c)    
 
+st.subheader('Price')
+col1, col2, col3 = st.columns(3)
+token = col1.selectbox('', tokens_k)
+period = col2.selectbox('', ['D', '8H', 'H', ])
+
+orders = get_today_orders()
+orders.extend(get_orders(yesterday, duration=30))
+orders = process_orders(orders)
+print(len(orders))
+
+kline = get_kline(orders, token, period)
+
+print('kline:', kline.head())
+trace = go.Candlestick(x=kline.index,
+                       open=kline['price']['first'],
+                       high=kline['price']['max'],
+                       low=kline['price']['min'],
+                       close=kline['price']['last'])
+
+fig = make_subplots(rows=2,
+    cols=1,
+    row_heights=[0.8, 0.2],
+    shared_xaxes=True,
+    vertical_spacing=0.02)
+
+fig.add_trace(trace, row=1, col=1)
+fig.add_trace(go.Bar(x=kline.index, y=kline['volume']['sum'], marker=dict(color='green')),
+               row=2,
+               col=1)
+
+fig.update_layout(title = token.upper()+'/USD Klines',
+    yaxis1_title = 'Price (usd)',
+    yaxis2_title = 'Volume (usd)',
+    xaxis2_title = 'Time',
+    xaxis1_rangeslider_visible = False,
+    xaxis2_rangeslider_visible = False,
+    yaxis2_showgrid = False,
+    showlegend=False
+)
+st.plotly_chart(fig)
