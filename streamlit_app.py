@@ -150,7 +150,7 @@ st.altair_chart(c)
 
 # st.altair_chart(c)    
 
-st.subheader('Price')
+st.header('Price')
 col1, col2, col3 = st.columns(3)
 token = col1.selectbox('', tokens_k)
 period = col2.selectbox('', ['D', '8H', 'H', ])
