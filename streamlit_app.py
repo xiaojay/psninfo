@@ -153,7 +153,7 @@ st.altair_chart(c)
 st.header('Price')
 col1, col2, col3 = st.columns(3)
 token = col1.selectbox('', tokens_k)
-period = col2.selectbox('', ['D', '8H', 'H', ])
+period = col2.selectbox('', ['D', '8H', '4H', 'H'])
 
 orders = get_today_orders()
 orders.extend(get_orders(yesterday, duration=30))
