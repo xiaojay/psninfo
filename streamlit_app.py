@@ -155,6 +155,8 @@ col1, col2, col3 = st.columns(3)
 token = col1.selectbox('', tokens_k)
 period = col2.selectbox('', ['D', '8H', '4H', 'H'])
 
+st.text("")
+
 col1, col2 = st.columns(2)
 col1.metric(':green[Current Price]', '%.2f usd/%s '%(prices[token], token))
 
