@@ -30,6 +30,16 @@ decimals = {
     'ans': 18
 }
 
+tags = {
+    'ar': "arweave,ethereum-ar-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543",
+    'usdc': "ethereum-usdc-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    'usdt': "ethereum-usdt-0xdac17f958d2ee523a2206206994597c13d831ec7",
+    'eth': "ethereum-eth-0x0000000000000000000000000000000000000000",
+    'ardrive':"arweave-ardrive--8A6RexFkpfWwuyVO98wzSFZh0d6VJuI-buTJvlwOJQ",
+    'acnh': "everpay-acnh-0x72247989079da354c9f0a6886b965bcc86550f8a",
+    'ans': "ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62"
+}
+
 min_amount = {
     'ar': "10000000000",
     'eth': "100000000000000",
