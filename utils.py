@@ -1,8 +1,11 @@
 from decimal import Decimal
 import requests
 from urllib.parse import urlencode, quote_plus
+import permaswap
 
 HALF = Decimal('0.5')
+router = 'wss://router.permaswap.network'
+pay = 'https://api.everpay.io'
 
 def liquidity_to_amount(liquidity, lower_price, upper_price, current_price):
     liquidity = Decimal(str(liquidity))
@@ -54,7 +57,12 @@ def get_price_from_redstone(token, currency, timestamp=''):
         payload['toTimestamp'] = str(timestamp)
 
     url = '%s/?%s'%(base_url, urlencode(payload, quote_via=quote_plus))
-    #print(url)
     result = requests.get(url).json()
     price = result[token.upper()]['value']/result[currency.upper()]['value']
     return price
+
+def get_price_from_ps(token, amount_in, decimals=4):
+    order = permaswap.get_order(pay, router, '0x61EbF673c200646236B2c53465bcA0699455d5FA', token, 'usdc', amount_in)
+    #rate = int(float(order['rate']) * 10**(decimals))/10**(decimals)
+    return order['rate']
+    

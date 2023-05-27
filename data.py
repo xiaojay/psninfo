@@ -30,6 +30,14 @@ decimals = {
     'ans': 18
 }
 
+min_amount = {
+    'ar': "10000000000",
+    'eth': "100000000000000",
+    'acnh': "10000000",
+    'ardrive': "100000000000000000",
+    'ans': "100000000000000000"
+}
+
 pools = {
     #'ar-usdt': '0x13f0377029205a60b0e02aef985cbf91d854282c2d8064c810667ee3ebcde39f',
     #'eth-usdt':'0x9d9c7e102d741ec921c41567c34e751f021cd37df42befe702d84a6475fae90c',
@@ -60,12 +68,24 @@ def get_prices():
         'usdc': 1,
         'usdt':1,
         #todo 
-        'ardrive': 0.3,
-        'acnh': 0.147,
         'ans': 3
     }
     prices['ar'] = utils.get_price_from_redstone('ar', 'usdc')
+    prices['ardrive'] = utils.get_price_from_redstone('ardrive', 'usdc')
+    prices['acnh'] = utils.get_price_from_redstone('ardrive', 'usdc')
     prices['eth'] = utils.get_price_from_redstone('eth', 'usdc')
+    return prices
+
+@st.cache_data(ttl=600)
+def get_prices2():
+    prices = {
+        'usdc': 1,
+        'usdt':1,
+    }
+    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans']:
+        print('get price for %s'%token)
+        prices[token] = utils.get_price_from_ps(token, min_amount[token])
+    
     return prices
 
 @st.cache_data(ttl=600)

@@ -10,7 +10,7 @@ from plotly.subplots import make_subplots
 
 st.title('Permaswap Stats Info')
 
-prices = get_prices()
+prices = get_prices2()
 print('prices', prices)
 info = get_info()
 pool_count = len(pools)
@@ -116,8 +116,8 @@ x, y = pool.split('-')
 #st.text('%s: %s'%(y, tvl[pool][y]))
 
 col1, col2, col3 = st.columns(3)
-col1.metric(':green[Token X]', '%.2f %s'%(tvl[pool][x], x.upper()))
-col2.metric(':green[Token Y]', '%.2f %s'%(tvl[pool][y], y.upper()))
+col1.metric(':green[Token X]', '%.1f %s'%(tvl[pool][x], x))
+col2.metric(':green[Token Y]', '%.1f %s'%(tvl[pool][y], y))
 col3.metric(":green[LP count]", tvl[pool]['lp_count'])
 
 date = []
@@ -154,6 +154,9 @@ st.header('Price')
 col1, col2, col3 = st.columns(3)
 token = col1.selectbox('', tokens_k)
 period = col2.selectbox('', ['D', '8H', '4H', 'H'])
+
+col1, col2 = st.columns(2)
+col1.metric(':green[Current Price]', '%.2f usd/%s '%(prices[token], token))
 
 orders = get_today_orders()
 orders.extend(get_orders(yesterday, duration=30))
