@@ -158,7 +158,7 @@ period = col2.selectbox('', ['D', '8H', '4H', 'H'])
 st.text("")
 
 col1, col2 = st.columns(2)
-col1.metric(':green[Current Price]', '%.2f usd/%s '%(prices[token], token))
+col1.metric(':green[Current Price]', '%.3f usd/%s '%(prices[token], token))
 col2.metric('', '%.4f %s/usd '%(1/prices[token], token))
 
 orders = get_today_orders()
