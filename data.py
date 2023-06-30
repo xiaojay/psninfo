@@ -6,7 +6,7 @@ import utils
 stats_host = 'https://stats.permaswap.network'
 router_host = 'https://router.permaswap.network'
 
-tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans']
+tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u']
 
 symbol_to_tag = {
     'ar': 'arweave,ethereum-ar-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543',
@@ -16,6 +16,7 @@ symbol_to_tag = {
     'ardrive': 'arweave-ardrive--8A6RexFkpfWwuyVO98wzSFZh0d6VJuI-buTJvlwOJQ',
     'acnh': 'everpay-acnh-0x72247989079da354c9f0a6886b965bcc86550f8a',
     'ans': 'ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62',
+    'u': 'arweave-u-KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw'
 }
 
 tag_to_symbol = {value: key for key, value in symbol_to_tag.items()}
@@ -27,7 +28,8 @@ decimals = {
     'eth':18,
     'ardrive':18,
     'acnh':8,
-    'ans': 18
+    'ans': 18,
+    'u': 6
 }
 
 tags = {
@@ -37,7 +39,8 @@ tags = {
     'eth': "ethereum-eth-0x0000000000000000000000000000000000000000",
     'ardrive':"arweave-ardrive--8A6RexFkpfWwuyVO98wzSFZh0d6VJuI-buTJvlwOJQ",
     'acnh': "everpay-acnh-0x72247989079da354c9f0a6886b965bcc86550f8a",
-    'ans': "ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62"
+    'ans': "ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62",
+    'u': 'arweave-u-KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw'
 }
 
 min_amount = {
@@ -45,7 +48,8 @@ min_amount = {
     'eth': "100000000000000",
     'acnh': "10000000",
     'ardrive': "100000000000000000",
-    'ans': "100000000000000000"
+    'ans': "100000000000000000",
+    'u': "100000"
 }
 
 pools = {
@@ -57,7 +61,8 @@ pools = {
     'eth-usdc': '0x7eb07d77601f28549ff623ad42a24b4ac3f0e73af0df3d76446fb299ec375dd5',
     'ar-ardrive': '0xbb546a762e7d5f24549cfd97dfa394404790293277658e42732ab3b2c4345fa3',
     'usdc-acnh': '0x7200199c193c97012893fd103c56307e44434322439ece7711f28a8c3512c082',
-    'ar-ans': '0x6e80137a5bbb6ae6b683fcd8a20978d6b4632dddc78aa61945adbcc5a197ca0f'
+    'ar-ans': '0x6e80137a5bbb6ae6b683fcd8a20978d6b4632dddc78aa61945adbcc5a197ca0f',
+    'ar-u': '0xdc13faadbd1efdaeb764f5515b20d88c5b9fa0c507c0717c7013b1725e398717'
 }
 
 fee_ratios = {
@@ -69,7 +74,8 @@ fee_ratios = {
     'eth-usdc': 0.003,
     'ar-ardrive': 0.003,
     'usdc-acnh':0.0005,
-    'ar-ans': 0.003
+    'ar-ans': 0.003,
+    'ar-u': 0.003
 }
 
 @st.cache_data(ttl=600)
@@ -77,13 +83,14 @@ def get_prices():
     prices = {
         'usdc': 1,
         'usdt':1,
-        #todo 
-        'ans': 3
+        'u': 0.8,
     }
     prices['ar'] = utils.get_price_from_redstone('ar', 'usdc')
     prices['ardrive'] = utils.get_price_from_redstone('ardrive', 'usdc')
     prices['acnh'] = utils.get_price_from_redstone('ardrive', 'usdc')
     prices['eth'] = utils.get_price_from_redstone('eth', 'usdc')
+    prices['ans'] = utils.get_price_from_redstone('ans', 'usdc')
+
     return prices
 
 @st.cache_data(ttl=600)
@@ -92,7 +99,7 @@ def get_prices2():
         'usdc': 1,
         'usdt':1,
     }
-    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans']:
+    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u']:
         #print('get price for %s'%token)
         prices[token] = utils.get_price_from_ps(token, min_amount[token])
     
