@@ -6,7 +6,7 @@ import utils
 stats_host = 'https://stats.permaswap.network'
 router_host = 'https://router.permaswap.network'
 
-tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u']
+tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp']
 
 symbol_to_tag = {
     'ar': 'arweave,ethereum-ar-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543',
