@@ -106,7 +106,7 @@ def get_prices2():
         'usdc': 1,
         'usdt':1,
     }
-    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u']:
+    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp']:
         #print('get price for %s'%token)
         prices[token] = utils.get_price_from_ps(token, min_amount[token])
     
