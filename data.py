@@ -6,7 +6,7 @@ import utils
 stats_host = 'https://stats.permaswap.network'
 router_host = 'https://router.permaswap.network'
 
-tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp']
+tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'map']
 
 symbol_to_tag = {
     'ar': 'arweave,ethereum-ar-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543',
@@ -17,7 +17,8 @@ symbol_to_tag = {
     'acnh': 'everpay-acnh-0x72247989079da354c9f0a6886b965bcc86550f8a',
     'ans': 'ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62',
     'u': 'arweave-u-KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
-    'stamp': 'arweave-stamp-TlqASNDLA1Uh8yFiH-BzR_1FDag4s735F3PoUFEv2Mo'
+    'stamp': 'arweave-stamp-TlqASNDLA1Uh8yFiH-BzR_1FDag4s735F3PoUFEv2Mo',
+    'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4'
 }
 
 tag_to_symbol = {value: key for key, value in symbol_to_tag.items()}
@@ -31,7 +32,8 @@ decimals = {
     'acnh':8,
     'ans': 18,
     'u': 6,
-    'stamp': 12
+    'stamp': 12,
+    'map': 18
 }
 
 tags = {
@@ -43,7 +45,8 @@ tags = {
     'acnh': "everpay-acnh-0x72247989079da354c9f0a6886b965bcc86550f8a",
     'ans': "ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62",
     'u': 'arweave-u-KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
-    'stamp': 'arweave-stamp-TlqASNDLA1Uh8yFiH-BzR_1FDag4s735F3PoUFEv2Mo'
+    'stamp': 'arweave-stamp-TlqASNDLA1Uh8yFiH-BzR_1FDag4s735F3PoUFEv2Mo',
+    'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4'
 }
 
 min_amount = {
@@ -53,7 +56,8 @@ min_amount = {
     'ardrive': "100000000000000000",
     'ans': "100000000000000000",
     'u': "100000",
-    'stamp': "100000000000"
+    'stamp': "100000000000",
+    'map': "100000000000000000"
 }
 
 pools = {
@@ -67,7 +71,8 @@ pools = {
     'usdc-acnh': '0x7200199c193c97012893fd103c56307e44434322439ece7711f28a8c3512c082',
     'ar-ans': '0x6e80137a5bbb6ae6b683fcd8a20978d6b4632dddc78aa61945adbcc5a197ca0f',
     'ar-u': '0xdc13faadbd1efdaeb764f5515b20d88c5b9fa0c507c0717c7013b1725e398717',
-    'ar-stamp': '0x94170544e7e25b6fc216eb044c1c283c89781bfb92bfeda3054488497bd654b6'
+    'ar-stamp': '0x94170544e7e25b6fc216eb044c1c283c89781bfb92bfeda3054488497bd654b6',
+    'eth-map': '0x5ac5d3598820e140cf5829cd6e50ade648d94496da540c51c9a19f11e06daae8',
 }
 
 fee_ratios = {
@@ -81,7 +86,8 @@ fee_ratios = {
     'usdc-acnh':0.0005,
     'ar-ans': 0.003,
     'ar-u': 0.003,
-    'ar-stamp': 0.003
+    'ar-stamp': 0.003,
+    'eth-map': 0.003
 }
 
 @st.cache_data(ttl=600)
@@ -97,6 +103,8 @@ def get_prices():
     prices['acnh'] = utils.get_price_from_redstone('ardrive', 'usdc')
     prices['eth'] = utils.get_price_from_redstone('eth', 'usdc')
     prices['ans'] = utils.get_price_from_redstone('ans', 'usdc')
+    prices['stamp'] = utils.get_price_from_redstone('stamp', 'usdc')
+    prices['map'] = utils.get_price_from_redstone('map', 'usdc')
 
     return prices
 
@@ -106,7 +114,7 @@ def get_prices2():
         'usdc': 1,
         'usdt':1,
     }
-    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp']:
+    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'map']:
         #print('get price for %s'%token)
         prices[token] = utils.get_price_from_ps(token, min_amount[token])
     
