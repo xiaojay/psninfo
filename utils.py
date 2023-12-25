@@ -65,7 +65,7 @@ def get_price_from_redstone(token, currency, timestamp=''):
 def get_price_from_ps(token, amount_in, decimals=4):
     order = get_order(pay, router, '0x61EbF673c200646236B2c53465bcA0699455d5FA', token, 'usdc', amount_in)
     #rate = int(float(order['rate']) * 10**(decimals))/10**(decimals)
-    return order['rate']
+    return order.get('rate', '') 
 
 def get_amount_out(user, order, token_out_tag):
     amount_out = 0
