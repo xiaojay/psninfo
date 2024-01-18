@@ -181,8 +181,12 @@ def get_volume(order, order_ref):
     amount_in = float(order['tokenInAmount'])
     amount_out = float(order['tokenOutAmount'])
     
-    token_in_ref = tag_to_symbol[order_ref['tokenInTag']]
-    token_out_ref = tag_to_symbol[order_ref['tokenOutTag']]
+    try:
+        token_in_ref = tag_to_symbol[order_ref['tokenInTag']]
+        token_out_ref = tag_to_symbol[order_ref['tokenOutTag']]
+    except:
+        return -1
+    
     amount_in_ref = float(order_ref['tokenInAmount'])
     amount_out_ref = float(order_ref['tokenOutAmount'])
     
