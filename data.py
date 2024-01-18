@@ -210,8 +210,11 @@ def process_orders(orders):
     n = len(orders)
     
     for index, order in enumerate(orders):
-        token_in = tag_to_symbol[order['tokenInTag']]
-        token_out = tag_to_symbol[order['tokenOutTag']]
+        try:
+            token_in = tag_to_symbol[order['tokenInTag']]
+            token_out = tag_to_symbol[order['tokenOutTag']]
+        except:
+            continue
         amount_in = float(order['tokenInAmount'])
         amount_out = float(order['tokenOutAmount'])
         volume = 0
