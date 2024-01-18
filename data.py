@@ -172,8 +172,12 @@ def get_today_orders():
     return get_orders(start, start)
 
 def get_volume(order, order_ref):
-    token_in = tag_to_symbol[order['tokenInTag']]
-    token_out = tag_to_symbol[order['tokenOutTag']]
+    try:
+        token_in = tag_to_symbol[order['tokenInTag']]
+        token_out = tag_to_symbol[order['tokenOutTag']]
+    except:
+        return -1
+    
     amount_in = float(order['tokenInAmount'])
     amount_out = float(order['tokenOutAmount'])
     
