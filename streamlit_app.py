@@ -44,7 +44,7 @@ for pair, lps in lps.items():
         print(ax, ay)
         tvl[pair][x] = tvl[pair].get(x, 0) + ax
         tvl[pair][y] = tvl[pair].get(y, 0) + ay
-        total_tvl += prices(x, 0) * ax 
+        total_tvl += prices.get(x, 0) * ax 
         total_tvl += prices.get(y, 0) * ay
 print('total_tvl:', total_tvl)
 print('tvl:', tvl)
