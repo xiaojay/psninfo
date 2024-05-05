@@ -6,7 +6,7 @@ import utils
 stats_host = 'https://stats.permaswap.network'
 router_host = 'https://router.permaswap.network'
 
-tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'map']
+tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'map', 'aocred', 'trunk']
 
 symbol_to_tag = {
     'ar': 'arweave,ethereum-ar-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543',
@@ -18,7 +18,11 @@ symbol_to_tag = {
     'ans': 'ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62',
     'u': 'arweave-u-KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
     'stamp': 'arweave-stamp-TlqASNDLA1Uh8yFiH-BzR_1FDag4s735F3PoUFEv2Mo',
-    'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4'
+    'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4',
+    'aocred': 'aostest-aocred-Sa0iBLPNyJQrwpTTG-tWLQU-1QeUAJA73DdxGGiKoJc',
+    'trunk': 'aostest-trunk-OT9qTE2467gcozb2g8R6D6N3nQS94ENcaAIJfUzHCww',
+    '0rbt': 'aostest-0rbt-BUhZLMwQ6yZHguLtJYA5lLUa9LQzLXMXRfaq9FVcPJc',
+    'halo':'psntest-halo-0x0000000000000000000000000000000000000000'
 }
 
 tag_to_symbol = {value: key for key, value in symbol_to_tag.items()}
@@ -33,7 +37,11 @@ decimals = {
     'ans': 18,
     'u': 6,
     'stamp': 12,
-    'map': 18
+    'map': 18,
+    'aocred':3,
+    'trunk':3,
+    '0rbt':18,
+    'halo':18,
 }
 
 tags = {
@@ -46,7 +54,11 @@ tags = {
     'ans': "ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62",
     'u': 'arweave-u-KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
     'stamp': 'arweave-stamp-TlqASNDLA1Uh8yFiH-BzR_1FDag4s735F3PoUFEv2Mo',
-    'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4'
+    'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4',
+    'aocred': 'aostest-aocred-Sa0iBLPNyJQrwpTTG-tWLQU-1QeUAJA73DdxGGiKoJc',
+    'trunk': 'aostest-trunk-OT9qTE2467gcozb2g8R6D6N3nQS94ENcaAIJfUzHCww',
+    '0rbt': 'aostest-0rbt-BUhZLMwQ6yZHguLtJYA5lLUa9LQzLXMXRfaq9FVcPJc',
+    'halo':'psntest-halo-0x0000000000000000000000000000000000000000',
 }
 
 min_amount = {
@@ -57,7 +69,9 @@ min_amount = {
     'ans': "100000000000000000",
     'u': "100000",
     'stamp': "100000000000",
-    'map': "100000000000000000"
+    'map': "100000000000000000",
+    'trunk': '1000',
+    'aocred': '1000',
 }
 
 pools = {
@@ -72,7 +86,8 @@ pools = {
     'ar-ans': '0x6e80137a5bbb6ae6b683fcd8a20978d6b4632dddc78aa61945adbcc5a197ca0f',
     'ar-u': '0xdc13faadbd1efdaeb764f5515b20d88c5b9fa0c507c0717c7013b1725e398717',
     'ar-stamp': '0x94170544e7e25b6fc216eb044c1c283c89781bfb92bfeda3054488497bd654b6',
-    'eth-map': '0x5ac5d3598820e140cf5829cd6e50ade648d94496da540c51c9a19f11e06daae8',
+    'aocred-ar':'0x17cf053e2c1e40ea7dc2b073d4771b9a8740605c0aacbb7274f7e4a5ec6b9712',
+    'trunk-ar':'0x6f5c2032a72144c4bab8db3fa6495e89b9440c47fe248e58845ec1c47926eef2'
 }
 
 fee_ratios = {
@@ -87,7 +102,8 @@ fee_ratios = {
     'ar-ans': 0.003,
     'ar-u': 0.003,
     'ar-stamp': 0.003,
-    'eth-map': 0.003
+    'aocred-ar':0.01,
+    'trunk-ar':0.03,
 }
 
 @st.cache_data(ttl=600)
@@ -114,7 +130,7 @@ def get_prices2():
         'usdc': 1,
         'usdt':1,
     }
-    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'map']:
+    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'map', 'aocred', 'trunk']:
         prices[token] = utils.get_price_from_ps(token, min_amount[token])
     
     return prices
