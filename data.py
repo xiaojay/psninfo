@@ -268,7 +268,11 @@ def process_orders(orders):
         for i in range(100):
             if index + i < n - 1:
                 order_next = orders[index + i]
-                volume = get_volume(order, order_next)
+                try:
+                    volume = get_volume(order, order_next)
+                except Exception as e:
+                    print(e)
+                    continue
                 if volume > 0:
                     new_order['volume'] = volume
                     new_orders.append(new_order)
@@ -276,7 +280,12 @@ def process_orders(orders):
                 
             if index - i > 0:
                 order_prev = orders[index - i]
-                volume = get_volume(order, order_prev)
+                try:
+                    volume = get_volume(order, order_prev)
+                except Exception as e:
+                    print(e)
+                    continue
+                 
                 if volume > 0:
                     new_order['volume'] = volume
                     new_orders.append(new_order)
