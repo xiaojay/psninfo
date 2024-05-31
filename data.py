@@ -42,6 +42,7 @@ decimals = {
     'trunk':3,
     '0rbt':18,
     'halo':18,
+    'exp(ario)':6
 }
 
 tags = {
@@ -59,6 +60,7 @@ tags = {
     'trunk': 'aostest-trunk-OT9qTE2467gcozb2g8R6D6N3nQS94ENcaAIJfUzHCww',
     '0rbt': 'aostest-0rbt-BUhZLMwQ6yZHguLtJYA5lLUa9LQzLXMXRfaq9FVcPJc',
     'halo':'psntest-halo-0x0000000000000000000000000000000000000000',
+    'exp(ario)':'aostest-exp(ario)-aYrCboXVSl1AXL9gPFe3tfRxRf0ZmkOXH65mKT0HHZw'
 }
 
 min_amount = {
@@ -72,6 +74,7 @@ min_amount = {
     'map': "100000000000000000",
     'trunk': '1000',
     'aocred': '1000',
+    'exp(ario)': '100000'
 }
 
 pools = {
@@ -87,7 +90,9 @@ pools = {
     'ar-u': '0xdc13faadbd1efdaeb764f5515b20d88c5b9fa0c507c0717c7013b1725e398717',
     'ar-stamp': '0x94170544e7e25b6fc216eb044c1c283c89781bfb92bfeda3054488497bd654b6',
     'aocred-ar':'0x17cf053e2c1e40ea7dc2b073d4771b9a8740605c0aacbb7274f7e4a5ec6b9712',
-    'trunk-ar':'0x6f5c2032a72144c4bab8db3fa6495e89b9440c47fe248e58845ec1c47926eef2'
+    'trunk-ar':'0x6f5c2032a72144c4bab8db3fa6495e89b9440c47fe248e58845ec1c47926eef2',
+    '0rbt-aocred': '0x733fad6543917e805df8f35bee9307bbdc15e180d9864ca665adcd8f90484453',
+    'exp(ario)-ar': '0x2a828200dbb69b0d83bd23ee4d98d34e8a2468b33fdf951eb55ec5623c46b1c7',
 }
 
 fee_ratios = {
@@ -104,6 +109,8 @@ fee_ratios = {
     'ar-stamp': 0.003,
     'aocred-ar':0.01,
     'trunk-ar':0.03,
+    '0rbt-aocred': 0.03,
+    'exp(ario)-ar': 0.1,
 }
 
 @st.cache_data(ttl=600)
@@ -268,11 +275,13 @@ def process_orders(orders):
         for i in range(100):
             if index + i < n - 1:
                 order_next = orders[index + i]
+                
                 try:
                     volume = get_volume(order, order_next)
                 except Exception as e:
                     print(e)
                     continue
+
                 if volume > 0:
                     new_order['volume'] = volume
                     new_orders.append(new_order)
