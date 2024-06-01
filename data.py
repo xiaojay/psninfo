@@ -6,7 +6,7 @@ import utils
 stats_host = 'https://stats.permaswap.network'
 router_host = 'https://router.permaswap.network'
 
-tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'map', 'aocred', 'trunk', '0rbt', 'exp(ario)']
+tokens_k = ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'aocred', 'trunk', '0rbt', 'exp(ario)']
 
 symbol_to_tag = {
     'ar': 'arweave,ethereum-ar-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543',
@@ -18,7 +18,7 @@ symbol_to_tag = {
     'ans': 'ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62',
     'u': 'arweave-u-KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
     'stamp': 'arweave-stamp-TlqASNDLA1Uh8yFiH-BzR_1FDag4s735F3PoUFEv2Mo',
-    'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4',
+    # 'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4',
     'aocred': 'aostest-aocred-Sa0iBLPNyJQrwpTTG-tWLQU-1QeUAJA73DdxGGiKoJc',
     'trunk': 'aostest-trunk-OT9qTE2467gcozb2g8R6D6N3nQS94ENcaAIJfUzHCww',
     '0rbt': 'aostest-0rbt-BUhZLMwQ6yZHguLtJYA5lLUa9LQzLXMXRfaq9FVcPJc',
@@ -37,7 +37,7 @@ decimals = {
     'ans': 18,
     'u': 6,
     'stamp': 12,
-    'map': 18,
+    # 'map': 18,
     'aocred':3,
     'trunk':3,
     '0rbt':18,
@@ -55,7 +55,7 @@ tags = {
     'ans': "ethereum-ans-0x937efa4a5ff9d65785691b70a1136aaf8ada7e62",
     'u': 'arweave-u-KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
     'stamp': 'arweave-stamp-TlqASNDLA1Uh8yFiH-BzR_1FDag4s735F3PoUFEv2Mo',
-    'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4',
+    # 'map': 'ethereum-map-0x9e976f211daea0d652912ab99b0dc21a7fd728e4',
     'aocred': 'aostest-aocred-Sa0iBLPNyJQrwpTTG-tWLQU-1QeUAJA73DdxGGiKoJc',
     'trunk': 'aostest-trunk-OT9qTE2467gcozb2g8R6D6N3nQS94ENcaAIJfUzHCww',
     '0rbt': 'aostest-0rbt-BUhZLMwQ6yZHguLtJYA5lLUa9LQzLXMXRfaq9FVcPJc',
@@ -71,7 +71,7 @@ min_amount = {
     'ans': "100000000000000000",
     'u': "100000",
     'stamp': "100000000000",
-    'map': "100000000000000000",
+    # 'map': "100000000000000000",
     'trunk': '1000',
     'aocred': '1000',
     '0rbt': '1000000000000',
@@ -128,7 +128,7 @@ def get_prices():
     prices['eth'] = utils.get_price_from_redstone('eth', 'usdc')
     prices['ans'] = utils.get_price_from_redstone('ans', 'usdc')
     prices['stamp'] = utils.get_price_from_redstone('stamp', 'usdc')
-    prices['map'] = utils.get_price_from_redstone('map', 'usdc')
+    # prices['map'] = utils.get_price_from_redstone('map', 'usdc')
 
     return prices
 
@@ -138,7 +138,7 @@ def get_prices2():
         'usdc': 1,
         'usdt':1,
     }
-    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'map', 'aocred', 'trunk', '0brt', 'exp(ario)']:
+    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'aocred', 'trunk', '0brt', 'exp(ario)']:
         prices[token] = utils.get_price_from_ps(token, min_amount[token])
     
     return prices
