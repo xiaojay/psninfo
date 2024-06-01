@@ -138,7 +138,7 @@ def get_prices2():
         'usdc': 1,
         'usdt':1,
     }
-    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'aocred', 'trunk', '0brt', 'exp(ario)']:
+    for token in ['ar', 'eth', 'acnh', 'ardrive', 'ans', 'u', 'stamp', 'aocred', 'trunk', '0rbt', 'exp(ario)']:
         prices[token] = utils.get_price_from_ps(token, min_amount[token])
     
     return prices
